@@ -47,12 +47,12 @@ class ProductsController < ShopifyApp::AuthenticatedController
     @shop = Shop.find(session[:shopify])
     session = ShopifyAPI::Session.new(@shop.shopify_domain, @shop.shopify_token)
     ShopifyAPI::Base.activate_session(session)
-    # if @shop.destroyed_products_count > 500
+    if @shop.destroyed_products_count > 500
       payment = ShopifyAPI::RecurringApplicationCharge.all.first
       if !payment || payment.status != 'active'
         flash[:notice] = 'You\'ve deleted over 500 products. Please upgrade your plan.'
         return redirect_to activate_path
       end
-    # end
+    end
   end
 end
