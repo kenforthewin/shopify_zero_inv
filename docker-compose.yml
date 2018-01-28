@@ -1,0 +1,19 @@
+version: '3'
+services:
+  app:
+    environment: 
+      - BUNDLE_PATH=/gems
+      - SHOPIFY_API_KEY=${SHOPIFY_API_KEY}
+      - SHOPIFY_SECRET=${SHOPIFY_SECRET}
+    depends_on:
+      - db
+    build: .
+    volumes:
+      - gems:/gems
+  db:
+    image: postgres
+    volumes:
+      - db-store:/var/lib/postgresql/data
+volumes:
+  db-store:
+  gems:

@@ -1,0 +1,8 @@
+version: '3'
+services:
+  app:
+    environment:
+      - RAILS_ENV=production
+      - VIRTUAL_HOST=shopify.kenforthewin.com
+      - LETSENCRYPT_HOST=shopify.kenforthewin.com
+      - LETSENCRYPT_EMAIL=bergquist.kenneth@gmail.com

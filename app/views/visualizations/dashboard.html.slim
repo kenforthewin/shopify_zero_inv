@@ -1,0 +1,7 @@
+.row
+  .col-xs-12
+    #orders_histogram
+    #normal_dist
+    / form
+    /   select.form-control#order_field name="order_field"
+    /     = options_from_collection_for_select @order_fields, :to_s, :to_s
