@@ -6,3 +6,4 @@ services:
       - VIRTUAL_HOST=shopify.kenforthewin.com
       - LETSENCRYPT_HOST=shopify.kenforthewin.com
       - LETSENCRYPT_EMAIL=bergquist.kenneth@gmail.com
+      - SECRET_KEY_BASE=${SECRET_KEY_BASE}
