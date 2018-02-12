@@ -47,4 +47,7 @@ $(document).on('turbolinks:load', function() {
       })
     }
   })
+  ShopifyApp.ready(function() {
+    ShopifyApp.Bar.loadingOff();
+  });
 })

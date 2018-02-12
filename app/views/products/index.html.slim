@@ -1,6 +1,6 @@
 .row
   .col-xs
-    h2 Zero inventory products
+    h2 ZID - Zero Inventory Delete
     .text-right
       #products-loading-message
       button.btn.btn-success#update-products Update products
@@ -29,3 +29,7 @@
     button.btn.btn-lg.btn-primary#submit-zero-remove Remove selected products
     h4#loading-message
     h4#finish-message
+    br
+    br
+    - if !@active
+      p #{@shop.destroyed_products_count} of 500 products destroyed. <a href=#{activate_path}>Upgrade now!</a>

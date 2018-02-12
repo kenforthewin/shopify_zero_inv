@@ -2,6 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <% application_name = ShopifyApp.configuration.application_name %>
     <title><%= application_name %></title>
     <%= stylesheet_link_tag 'application' %>
@@ -11,7 +12,7 @@
 
   <body>
     <div class="app-wrapper">
-      <div class="app-content container-fluid">
+      <div class="app-content container">
         <main role="main">
           <%= yield %>
         </main>
