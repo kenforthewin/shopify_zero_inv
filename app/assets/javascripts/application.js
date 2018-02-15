@@ -20,6 +20,7 @@
 //= require_tree .
 
 $(document).on('turbolinks:load', function() {
+  ShopifyApp.Bar.loadingOff();
   table = $('#products-table').DataTable()
   $('input[name="check-all"]').change(function() {
     table.$('input').prop("checked", $('input[name="check-all"]').prop('checked'))

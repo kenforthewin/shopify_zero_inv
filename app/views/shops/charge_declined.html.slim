@@ -1,0 +1,8 @@
+.row
+  .col-xs-12
+    h2 You declined the charge.
+    p You won't be charged for this app, however if you've reached 500 or more product deletes you will no longer be able to use it.
+    - if @shop.destroyed_products_count > 500
+      = link_to 'Agree to pay', activate_path, class: 'btn btn-primary'
+    - else
+      = link_to 'Back to app', root_path, class: 'btn btn-primary'
