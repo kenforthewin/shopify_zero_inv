@@ -3,7 +3,7 @@ class ShopsController < ShopifyApp::AuthenticatedController
     @shop = Shop.find(session[:shopify])
     session = ShopifyAPI::Session.new(@shop.shopify_domain, @shop.shopify_token)
     ShopifyAPI::Base.activate_session(session)
-    charge = ShopifyAPI::RecurringApplicationCharge.create name: '>500 products deleted', price: 5.0, return_url: shops_callback_url, test: true
+    charge = ShopifyAPI::RecurringApplicationCharge.create name: '>500 products deleted', price: 5.0, return_url: shops_callback_url
     @confirmation_url = charge.confirmation_url
   end
 
