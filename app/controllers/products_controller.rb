@@ -20,7 +20,11 @@ class ProductsController < ShopifyApp::AuthenticatedController
     start_time = Time.now
 
     products.each do |product|
-      variant = ShopifyAPI::Variant.find(product)
+      begin
+        variant = ShopifyAPI::Variant.find(product)
+      rescue
+        next
+      end
       Rails.logger.debug product
       if variant.title == 'Default Title'
         product_destroy_count += 1 if ShopifyAPI::Product.find(variant.product_id).destroy
