@@ -7,3 +7,6 @@ services:
       - LETSENCRYPT_HOST=shopify.kenforthewin.com
       - LETSENCRYPT_EMAIL=bergquist.kenneth@gmail.com
       - SECRET_KEY_BASE=${SECRET_KEY_BASE}
+  sidekiq:
+    environment:
+      - RAILS_ENV=production
