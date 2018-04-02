@@ -7,6 +7,7 @@ services:
       - SHOPIFY_SECRET=${SHOPIFY_SECRET}
     depends_on:
       - db
+      - redis
     build: .
     volumes:
       - gems:/gems
@@ -14,6 +15,25 @@ services:
     image: postgres
     volumes:
       - db-store:/var/lib/postgresql/data
+  redis:
+    image: redis
+
+  sidekiq:
+    build: .
+    volumes:
+      - gems:/gems
+    depends_on:
+      - redis
+      - db
+      - app
+    entrypoint:
+      - bundle
+      - exec
+      - sidekiq
+    environment: 
+      - BUNDLE_PATH=/gems
+      - SHOPIFY_API_KEY=${SHOPIFY_API_KEY}
+      - SHOPIFY_SECRET=${SHOPIFY_SECRET}
 volumes:
   db-store:
   gems:

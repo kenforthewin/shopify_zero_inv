@@ -1,4 +1,6 @@
 class SyncJob
+  include Sidekiq::Worker
+
   CYCLE = 0.5
   def perform(shop_id)
     client = Elasticsearch::Client.new log: true, host: 'elasticsearch'
@@ -18,7 +20,8 @@ class SyncJob
     #     Customer.create shop_id: shop_id, body: customer
     #   end
     # end
-    # @shop.update last_synced_at: DateTime.now
+    @shop.update last_synced_at: DateTime.now
+    ProductChannel.broadcast_to(shop_id, message: "products_loaded")
   end
 
   private
@@ -36,11 +39,7 @@ class SyncJob
         start_time = Time.now
       end
 
-      if @shop.last_synced_at.present?
-        objects = shopify_class.find( :all, :params => { :limit => 250, :page => page, created_at_min: @shop.last_synced_at } )
-      else
-        objects = shopify_class.find( :all, :params => { :limit => 250, :page => page } )
-      end
+      objects = shopify_class.find( :all, :params => { :limit => 250, :page => page } )
       yield objects
     end
   end

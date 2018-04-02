@@ -1,48 +1,31 @@
 class ProductsController < ShopifyApp::AuthenticatedController
   before_action :authorize_payments
   def index
-    client = Elasticsearch::Client.new log: true, host: 'elasticsearch'
-    @products = client.get(index: 'shop', id: session[:shopify])['_source']['products']
-    @products ||= []
-    @products = @products.select{ |product| product['variants'].any? { |variant| variant['inventory_quantity'] == 0 } }
   end
 
   def sync
-    SyncJob.new.perform(session[:shopify])
+    SyncJob.perform_async(session[:shopify])
     render json: {ok: true}.to_json
   end
 
-  CYCLE = 0.5  
-  def destroy_zero
-    products = params[:products]
-    destroy_count = 0
-    product_destroy_count = 0
-    start_time = Time.now
-
+  def get_products
+    client = Elasticsearch::Client.new log: true, host: 'elasticsearch'
+    products = client.get(index: 'shop', id: session[:shopify])['_source']['products']
+    products ||= []
+    products = products.select{ |product| product['variants'].any? { |variant| variant['inventory_quantity'] == 0 } }
+    products_dt = []
     products.each do |product|
-      begin
-        variant = ShopifyAPI::Variant.find(product)
-      rescue
-        next
-      end
-      Rails.logger.debug product
-      if variant.title == 'Default Title'
-        product_destroy_count += 1 if ShopifyAPI::Product.find(variant.product_id).destroy
-      else
-        destroy_count += 1 if variant.destroy
-
-      end
-      if destroy_count != 1
-        stop_time = Time.now
-        processing_duration = stop_time - start_time
-        wait_time = (CYCLE - processing_duration).ceil
-        sleep wait_time if wait_time > 0
-        start_time = Time.now
+      product['variants'].select{|variant| variant['inventory_quantity'] == 0}.each do |variant|
+        variant_check = "<input type='checkbox' data-name=#{variant['id']} />&nbsp;"
+        products_dt << [ variant_check, product['title'], variant['title'], variant['sku'], variant['created_at'][0..9], variant['inventory_quantity'] ]
       end
     end
-    @shop.update(destroyed_products_count: @shop.destroyed_products_count + destroy_count)
-    response_text = "#{destroy_count} #{'variant'.pluralize(destroy_count)} and #{product_destroy_count} #{'product'.pluralize(product_destroy_count)} destroyed. Click 'Update Products' to check for any remaining."
-    render json: {destroy_count: destroy_count, product_destroy_count: product_destroy_count, response_text: response_text}.to_json
+    render json: products_dt.to_json
+  end
+
+  def destroy_zero
+    DeleteJob.perform_async(session[:shopify], params[:products])
+    render json: {ok: true}.to_json
   end
 
   private

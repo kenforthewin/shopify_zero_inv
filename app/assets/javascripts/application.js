@@ -21,33 +21,7 @@
 
 $(document).on('turbolinks:load', function() {
   ShopifyApp.Bar.loadingOff();
-  table = $('#products-table').DataTable()
-  $('input[name="check-all"]').change(function() {
-    table.$('input').prop("checked", $('input[name="check-all"]').prop('checked'))
-  })
-  $('#update-products').click(function() {
-    $('#update-products').prop('disabled', 'disabled')
-    $.get('/products/sync', function(data) {
-      location.reload()
-    })
-  })
-  $('#submit-zero-remove').click(function() {
-    $('#submit-zero-remove').prop('disabled', 'disabled')
-    ids = []
-    $.each(table.$('input:checked'), function(index, el) {
-      ids.push($(el).data('name'))
-    })
-    if(!ids.length) {
-      $('#submit-zero-remove').prop('disabled', false)
-      $('#finish-message').text("You didn't select any products. Try again.")
-    } else {
-      $('#loading-message').text('Working, please stand by...')
-      $.post('/products/destroy_zero', { products: ids }, function(data){
-        $('#loading-message').text('Done.')
-        $('#finish-message').text(data.response_text)
-      })
-    }
-  })
+
   ShopifyApp.ready(function() {
     ShopifyApp.Bar.loadingOff();
   });
