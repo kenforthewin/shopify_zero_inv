@@ -1,6 +1,6 @@
 $ ->
   if $('#loading-bar').length > 0
-    App.cable.subscriptions.create "ProductChannel",
+    App.product_channel = App.product_channel || App.cable.subscriptions.create "ProductChannel",
       connected: ->
         console.log 'connected'
         $.get('/products/sync')
