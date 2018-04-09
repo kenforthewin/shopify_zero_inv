@@ -18,11 +18,22 @@
 //= require d3/build/d3
 //= require datatables/media/js/jquery.dataTables
 //= require_tree .
+const permissionUrl = `/oauth/authorize?client_id=09f29aa8e5c5f71b2a7b6e4026d333b9&scope=read_products,read_orders&redirect_uri=${redirectUri}`;
 
+// If the current window is the 'parent', change the URL by setting location.href
+if (window.top == window.self) {
+  window.location.assign(`https://${shopDomain}/admin/${permissionUrl}`);
+
+// If the current window is the 'child', change the parent's URL with ShopifyApp.redirect
+} else {
+  ShopifyApp.redirect(permissionUrl);
+}
 $(document).on('turbolinks:load', function() {
   ShopifyApp.Bar.loadingOff();
 
   ShopifyApp.ready(function() {
     ShopifyApp.Bar.loadingOff();
   });
+
+
 })
