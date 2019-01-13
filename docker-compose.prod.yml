@@ -8,6 +8,7 @@ services:
       - LETSENCRYPT_EMAIL=bergquist.kenneth@gmail.com
       - SECRET_KEY_BASE=${SECRET_KEY_BASE}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - RAILS_SERVE_STATIC_FILES=${RAILS_SERVE_STATIC_FILES}
   sidekiq:
     environment:
       - RAILS_ENV=production
