@@ -82,6 +82,5 @@ test:
 #
 production:
   <<: *default
-  # database: app_production
-  # username: app
+  database: zid_production
   password: <%= ENV['POSTGRES_PASSWORD'] %>
