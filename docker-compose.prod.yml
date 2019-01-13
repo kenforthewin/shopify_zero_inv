@@ -7,6 +7,18 @@ services:
       - LETSENCRYPT_HOST=shopify.kenforthewin.com
       - LETSENCRYPT_EMAIL=bergquist.kenneth@gmail.com
       - SECRET_KEY_BASE=${SECRET_KEY_BASE}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
   sidekiq:
     environment:
       - RAILS_ENV=production
+  db:
+    image: gcr.io/cloudsql-docker/gce-proxy:1.11
+    environment:
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    volumes:
+      - $PWD/cloudsql:/cloudsql
+      - $PWD/db-key.json:/config
+    command:
+      - /cloud_sql_proxy
+      - -instances=react-rails-auth:us-central1:scalr=tcp:0.0.0.0:5432
+      - -credential_file=/config

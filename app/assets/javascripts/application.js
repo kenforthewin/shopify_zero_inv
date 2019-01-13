@@ -20,9 +20,7 @@
 //= require_tree .
 $(document).on('turbolinks:load', function() {
   ShopifyApp.Bar.loadingOff();
-
   ShopifyApp.ready(function() {
     ShopifyApp.Bar.loadingOff();
   });
-
 })

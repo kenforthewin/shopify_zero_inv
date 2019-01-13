@@ -8,16 +8,23 @@ services:
     depends_on:
       - db
       - redis
+      - elasticsearch
     build: .
     volumes:
       - gems:/gems
+    networks:
+      - esnet
+      - main
   db:
-    image: postgres
+    image: postgres:10
     volumes:
       - db-store:/var/lib/postgresql/data
+    networks:
+      - main
   redis:
     image: redis
-
+    networks:
+      - main
   sidekiq:
     build: .
     volumes:
@@ -34,6 +41,46 @@ services:
       - BUNDLE_PATH=/gems
       - SHOPIFY_API_KEY=${SHOPIFY_API_KEY}
       - SHOPIFY_SECRET=${SHOPIFY_SECRET}
+    networks:
+      - main
+      - esnet
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:6.1.2
+    container_name: elasticsearch
+    environment:
+      - cluster.name=docker-cluster
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - esdata:/usr/share/elasticsearch/data
+    ports:
+      - 9200:9200
+    networks:
+      - esnet
+      - main
+  elasticsearch2:
+    image: docker.elastic.co/elasticsearch/elasticsearch:6.1.2
+    container_name: elasticsearch2
+    environment:
+      - cluster.name=docker-cluster
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - "discovery.zen.ping.unicast.hosts=elasticsearch"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    networks:
+      - esnet
 volumes:
   db-store:
   gems:
+  esdata:
+  esdata2:
+networks:
+  esnet:
+  main:
