@@ -9,8 +9,8 @@ class ProductsController < ShopifyApp::AuthenticatedController
   end
 
   def get_products
-    client = Elasticsearch::Client.new log: true, host: 'elasticsearch'
-    products = client.get(index: 'shop', id: session[:shopify])['_source']['products']
+    @shop = Shop.find(session[:shopify])
+    products = @shop.products
     products ||= []
     products = products.select{ |product| product['variants'].any? { |variant| variant['inventory_quantity'] == 0 } }
     products_dt = []

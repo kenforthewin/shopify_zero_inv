@@ -3,7 +3,6 @@ class SyncJob
 
   CYCLE = 0.5
   def perform(shop_id)
-    client = Elasticsearch::Client.new log: true, host: 'elasticsearch'
     @shop = Shop.find(shop_id)
     session = ShopifyAPI::Session.new(@shop.shopify_domain, @shop.shopify_token)
     ShopifyAPI::Base.activate_session(session)
@@ -11,9 +10,10 @@ class SyncJob
       # orders.each do |order|
         # Order.create shop_id: shop_id, body: order
       # end
-      client.index index: 'shop', id: shop_id, type: 'page_body', body: {
-        products: products
-      }
+      # client.index index: 'shop', id: shop_id, type: 'page_body', body: {
+      #   products: products
+      # }
+      @shop.update! products: products
     end
     # sync_objects(ShopifyAPI::Customer) do |customers|
     #   customers.each do |customer|
