@@ -1,6 +1,6 @@
 .row
   .col-xs
-    h2 ZID - Zero Inventory Delete
+    <br />
     .text-right
       #products-loading-message
       button.btn.btn-success#update-products Update products
@@ -26,7 +26,7 @@
       /         td= variant['created_at'][0..9]
       /         td= variant['inventory_quantity']
     br
-    button.btn.btn-lg.btn-primary#submit-zero-remove Remove selected products
+    button.btn.btn-md.btn-danger#submit-zero-remove Remove selected products
     br
     br
     .progress#loading-bar
@@ -36,4 +36,7 @@
     br
     br
     - if !@active
-      p #{@shop.destroyed_products_count} of 500 products destroyed. <a href=#{activate_path}>Upgrade now!</a>
+      p #{@shop.destroyed_products_count} of 50 products destroyed. <a href=#{activate_path}>Upgrade now!</a>
+    br
+    br
+    a[href="/privacy-policy" target="_"] Privacy Policy

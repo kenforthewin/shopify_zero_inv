@@ -11,6 +11,7 @@ Rails.application.routes.draw do
   get 'shops/activate-and-redirect', to: 'shops#activate_and_redirect', as: :activate_and_redirect
   get 'shops/charge_declined', to: 'shops#charge_declined', as: :charge_declined
   get '/shops/callback', to: 'shops#callback', as: :shops_callback
+  get '/privacy-policy', to: 'static#privacy_policy'
   mount ShopifyApp::Engine, at: '/'
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end
