@@ -5,6 +5,7 @@ services:
       - BUNDLE_PATH=/gems
       - SHOPIFY_API_KEY=${SHOPIFY_API_KEY}
       - SHOPIFY_SECRET=${SHOPIFY_SECRET}
+      - SMTP_PASSWORD=${SMTP_PASSWORD}
     depends_on:
       - db
       - redis
@@ -39,6 +40,7 @@ services:
       - BUNDLE_PATH=/gems
       - SHOPIFY_API_KEY=${SHOPIFY_API_KEY}
       - SHOPIFY_SECRET=${SHOPIFY_SECRET}
+      - SMTP_PASSWORD=${SMTP_PASSWORD}
     networks:
       - main
 volumes:

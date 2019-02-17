@@ -17,7 +17,10 @@ class ProductsController < ShopifyApp::AuthenticatedController
     products.each do |product|
       product['variants'].select{|variant| variant['inventory_quantity'] == 0}.each do |variant|
         variant_check = "<input type='checkbox' data-name=#{variant['id']} />&nbsp;"
-        products_dt << [ variant_check, product['title'], variant['title'], variant['sku'], variant['created_at'][0..9], variant['inventory_quantity'] ]
+        image_url = product['images'].first.try(:[], 'src')
+        image = image_url.present? ? "<img src=\"#{image_url}\" alt=\"#{variant['title']}\" width=\"100\" >&nbsp;" : ''
+        product = "#{image}#{product['title']}"
+        products_dt << [ variant_check, product, variant['title'], variant['sku'], variant['created_at'][0..9], variant['inventory_quantity'] ]
       end
     end
     render json: products_dt.to_json

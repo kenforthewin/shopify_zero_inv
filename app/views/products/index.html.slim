@@ -1,17 +1,20 @@
 .row
-  .col-xs
+  .col-md
     <br />
     .text-right
       #products-loading-message
       button.btn.btn-success#update-products Update products
+      | &nbsp;
+      button.btn.btn-primary data-target="#myModal" data-toggle="modal" type="button" 
+        | Support Center
     <input type="checkbox" name="check-all"/>&nbsp;
     <label for="check-all">Check/Uncheck all</label>
     table.table#products-table
       thead
         tr
           th
-          th Product Name
-          th Variant Name
+          th Product
+          th Variant
           th SKU
           th Created At
           th Quantity
@@ -40,3 +43,70 @@
     br
     br
     a[href="/privacy-policy" target="_"] Privacy Policy
+/! Modal
+#myModal.modal.fade aria-labelledby="myModalLabel" role="dialog" tabindex="-1" 
+  .modal-dialog.modal-lg role="document"
+    .modal-content
+      .modal-header
+        button.close aria-label="Close" data-dismiss="modal" type="button" 
+          span aria-hidden="true"  &times;
+      .modal-body
+        ul#myTab.nav.nav-tabs role="tablist" 
+          li.nav-item
+            a#home-tab.nav-link.active aria-controls="home" aria-selected="true" data-toggle="tab" href="#home" role="tab"  FAQ
+          li.nav-item
+            a#profile-tab.nav-link aria-controls="profile" aria-selected="false" data-toggle="tab" href="#profile" role="tab"  Contact Us
+          li.nav-item
+            a#contact-tab.nav-link aria-controls="contact" aria-selected="false" data-toggle="tab" href="#contact" role="tab"  Privacy Policy
+        #myTabContent.tab-content
+          #home.tab-pane.fade.show.active aria-labelledby="home-tab" role="tabpanel"
+            br
+            ul
+              li
+                b Are variants or products deleted?&nbsp;
+                | Variants are deleted. When the last variant is deleted, the product will be deleted.
+              li
+                b When "select all" is pressed, is only the page selected or all pages?&nbsp;
+                | All pages are selected.
+              li
+                b Why are my products taking so long to delete?&nbsp;
+                | We rate-limit deletion based on Shopify's API rules.
+              li
+                b If I navigate away from the page will it stop the process?&nbsp;
+                | No. Products will continue to be deleted.
+              li
+                b How can I know how many products will be deleted?&nbsp;
+                | When you press "Remove selected products", a confirmation will appear displaying the total count of products selected.
+          #profile.tab-pane.fade aria-labelledby="profile-tab" role="tabpanel"
+            br
+            form method="post" action="/shops/support"
+              div.form-group
+                textarea.form-control placeholder="Enter message here..." name="message"
+              button type="submit" class="btn btn-primary" Submit
+          #contact.tab-pane.fade aria-labelledby="contact-tab" role="tabpanel"
+            br
+            p ZID - Zero Inventory Delete aka "the App” provides bulk deletion of zero inventory products aka "the Service" to merchants who use Shopify to power their stores. This Privacy Policy describes how personal information is collected, used, and shared when you install or use the App in connection with your Shopify-supported store.
+
+            h3 Personal Information the App Collects
+
+            p When you install the App, we are automatically able to access certain types of information from your Shopify account: we have the ability to read your product and variant information, and the ability to modify and delete existing products.
+
+            p We collect personal information directly from the relevant individual, through your Shopify account, or using the following technologies: “Cookies” are data files that are placed on your device or computer and often include an anonymous unique identifier. For more information about cookies, and how to disable cookies, visit http://www.allaboutcookies.org. “Log files” track actions occurring on the Site, and collect data including your IP address, browser type, Internet service provider, referring/exit pages, and date/time stamps.
+
+            h3 How Do We Use Your Personal Information?
+
+            p We use the personal information we collect from you and your customers in order to provide the Service and to operate the App. Additionally, we use this personal information to: Communicate with you; Optimize or improve the App; and Provide you with information or advertising relating to our products or services.
+
+            h3 Sharing Your Personal Information
+
+            p We will never share your personal information with a third-party, except to comply with applicable laws and regulations, to respond to a subpoena, search warrant or other lawful request for information we receive, or to otherwise protect our rights.
+
+            p If you are a European resident, you have the right to access personal information we hold about you and to ask that your personal information be corrected, updated, or deleted. If you would like to exercise this right, please contact us through the contact information below.
+
+            p Additionally, if you are a European resident we note that we are processing your information in order to fulfill contracts we might have with you (for example if you add a new product to your site), or otherwise to pursue our legitimate business interests listed above. Additionally, please note that your information will be transferred outside of Europe, including to Canada and the United States.
+
+            p We may update this privacy policy from time to time in order to reflect, for example, changes to our practices or for other operational, legal or regulatory reasons.
+
+            h3 Contact Us 
+
+            p For more information about our privacy practices, if you have questions, or if you would like to make a complaint, please contact us by e-mail at bergquist.kenneth@gmail.com

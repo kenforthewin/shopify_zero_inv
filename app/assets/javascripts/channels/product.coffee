@@ -11,22 +11,24 @@ $(document).on 'turbolinks:load', ->
       return
     return
   $('#submit-zero-remove').click ->
-    if confirm('Are you sure? This will permanently delete the selected products')
-      $('#submit-zero-remove').prop 'disabled', 'disabled'
-      ids = []
-      $.each table.$('input:checked'), (index, el) ->
-        ids.push $(el).data('name')
-        return
-      if !ids.length
-        $('#submit-zero-remove').prop 'disabled', false
-        $('#finish-message').text 'You didn\'t select any products. Try again.'
-      else
+    ids = []
+    $.each table.$('input:checked'), (index, el) ->
+      ids.push $(el).data('name')
+      return
+    $('#submit-zero-remove').prop 'disabled', 'disabled'
+    if !ids.length
+      $('#submit-zero-remove').prop 'disabled', false
+      $('#finish-message').text 'You didn\'t select any products. Try again.'
+    else
+      message = 'Are you sure? This will permanently delete ' + ids.length + ' product(s).'
+      if confirm(message)
         # $('#loading-message').text 'Working, please stand by...'
         $.post '/products/destroy_zero', { products: ids }, (data) ->
           # $('#loading-message').text 'Done.'
           # $('#finish-message').text data.response_text
           return
-      return
+      else
+        $('#submit-zero-remove').prop 'disabled', false
 
   if $('#loading-bar').length > 0
     App.product_channel = App.product_channel || App.cable.subscriptions.create "ProductChannel",

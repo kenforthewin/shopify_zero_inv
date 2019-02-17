@@ -25,4 +25,11 @@ class ShopsController < ShopifyApp::AuthenticatedController
     flash[:info] = 'Thank you for signing up.'
     redirect_to root_path
   end
+
+  def support
+    @shop = Shop.find(session[:shopify])
+    SendSupportEmailJob.perform_async(@shop.id, params[:message])
+    flash[:notice] = 'Message sent. Expect a response by email within 24 hours.'
+    redirect_to root_path
+  end
 end
